@@ -13,7 +13,6 @@ public class UsersController:BaseApiController{
             _context = context;
     }
 
-    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers(){
         var users = await _context.Users.ToListAsync();
