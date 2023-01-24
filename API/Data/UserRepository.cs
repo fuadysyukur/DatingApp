@@ -22,11 +22,7 @@ public class UserRepository : IUserRepository
         return await _context.Users
             .Where(x => x.UserName == username)
             .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-            .Select(user => new MemberDto{
-                Id=user.Id,
-                UserName=user.UserName,
-                KnownAs=user.KnownAs
-            }).SingleOrDefaultAsync();
+            .SingleOrDefaultAsync();
     }
 
     public async Task<IEnumerable<MemberDto>> GetMembersAsync()
@@ -48,7 +44,9 @@ public class UserRepository : IUserRepository
 
     public async Task<AppUser> GetUserByUsernameAsync(string username)
     {
-        return await _context.Users.Include(p => p.Photos).SingleOrDefaultAsync(x => x.UserName == username);
+        return await _context.Users
+            .Include(p => p.Photos)
+            .SingleOrDefaultAsync(x => x.UserName == username);
     }
 
     public async Task<bool> SaveAllASync()
